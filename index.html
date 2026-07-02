@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bolão Copa do Mundo: Brasil x Noruega</title>
+    <style>
+        /* Paleta Tema Copa do Mundo (Premium) */
+        :root {
+            --copa-primary: #0a1f44;
+            --copa-gold: #d4af37;
+            --copa-accent: #e3002b;
+            --copa-bg: #f0f4f8;
+            --text-dark: #222222;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--copa-bg);
+            margin: 0;
+            padding: 20px;
+            color: var(--text-dark);
+            background-image: radial-gradient(circle at top, #ffffff, var(--copa-bg));
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            border-top: 5px solid var(--copa-gold);
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--copa-primary);
+            margin-bottom: 5px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .date-info {
+            text-align: center;
+            color: #666;
+            font-size: 18px;
+            margin-bottom: 30px;
+            font-weight: 600;
+        }
+
+        /* Estrutura do Placar com Escudos */
+        .match-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 30px;
+            margin: 20px 0 40px 0;
+            background-color: #f9f9fc;
+            padding: 20px;
+            border-radius: 10px;
+            border: 1px solid #eaeaea;
+        }
+
+        .team {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .team span {
+            font-size: 18px;
+            font-weight: bold;
+            color: var(--copa-primary);
+        }
+
+        .escudo {
+            width: 90px;
+            height: 90px;
+            object-fit: contain;
+            filter: drop-shadow(0 4px 4px rgba(0,0,0,0.15));
+            transition: transform 0.3s;
+        }
+
+        .escudo:hover {
+            transform: scale(1.1);
+        }
+
+        .vs {
+            font-size: 24px;
+            font-weight: 900;
+            color: var(--copa-gold);
+            background-color: var(--copa-primary);
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: var(--copa-primary);
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 16px;
+            transition: border-color 0.3s;
+        }
+
+        input:focus {
+            border-color: var(--copa-gold);
+            outline: none;
+        }
+
+        .score-inputs {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            background: #fafafa;
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid #eee;
+        }
+
+        .score-inputs input {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            color: var(--copa-primary);
+        }
+
+        button {
+            width: 100%;
+            background-color: var(--copa-primary);
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 6px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            box-shadow: 0 4px 6px rgba(10, 31, 68, 0.2);
+        }
+
+        button:hover {
+            background-color: #0d2a5c;
+            transform: translateY(-2px);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 40px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+        }
+        
+        td:first-child, th:first-child {
+            text-align: left;
+        }
+
+        th {
+            background-color: var(--copa-primary);
+            color: var(--copa-gold);
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .palpite-destaque {
+            font-size: 18px;
+            font-weight: 800;
+            color: var(--copa-primary);
+            background: #f4f6f9;
+            padding: 5px 15px;
+            border-radius: 20px;
+            display: inline-block;
+        }
+
+        /* Estrutura do PIX */
+        .pix-container {
+            background-color: #f8fafc;
+            border: 2px dashed var(--copa-gold);
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        
+        .pix-container h3 {
+            margin: 0 0 10px 0;
+            color: var(--copa-primary);
+        }
+        
+        .pix-valor {
+            font-size: 22px;
+            font-weight: 900;
+            color: #10b981; /* Verde dinheiro/PIX */
+            margin-bottom: 10px;
+        }
+        
+        .pix-chave-box {
+            background: #e2e8f0;
+            padding: 10px 15px;
+            border-radius: 6px;
+            display: inline-block;
+            margin-bottom: 15px;
+            font-family: monospace;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--text-dark);
+            letter-spacing: 0.5px;
+        }
+
+        .btn-pix {
+            background-color: #10b981;
+            padding: 10px 20px;
+            font-size: 14px;
+            width: auto;
+            box-shadow: none;
+            display: inline-block;
+        }
+
+        .btn-pix:hover {
+            background-color: #059669;
+            transform: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Bolão Brasil x Noruega</h1>
+    <p class="date-info">Domingo, 05/07/2026</p>
+    
+    <div class="match-header">
+        <div class="team">
+            <img src="img/Brazilian_Football_Confederation_logo.svg.webp" alt="Escudo Brasil" class="escudo">
+            <span>Brasil</span>
+        </div>
+        
+        <div class="vs">X</div>
+        
+        <div class="team">
+            <img src="img/nor_women.png" alt="Escudo Noruega" class="escudo">
+            <span>Noruega</span>
+        </div>
+    </div>
+
+    <!-- Área de Pagamento / PIX -->
+    <div class="pix-container">
+        <h3>Participe do Bolão!</h3>
+        <div class="pix-valor">Valor: R$ 10,00</div>
+        <p style="margin-bottom: 8px; font-size: 14px;">Faça o pagamento para a chave PIX abaixo:</p>
+        
+        <!-- ALTERE SUA CHAVE PIX AQUI -->
+        <div class="pix-chave-box" id="chave-pix">b0314cba-10a4-4e97-b3f5-2bc5451f304c</div>
+        <br>
+        
+        <button type="button" class="btn-pix" id="btn-copiar-pix">Copiar Chave PIX</button>
+    </div>
+
+    <form id="bolao-form">
+        <div class="form-group">
+            <label for="nome">Seu Nome:</label>
+            <input type="text" id="nome" required placeholder="Digite o seu nome">
+        </div>
+        
+        <div class="form-group score-inputs">
+            <div>
+                <label for="gols-brasil">Gols Brasil:</label>
+                <input type="number" id="gols-brasil" min="0" required placeholder="0">
+            </div>
+            <div>
+                <label for="gols-noruega">Gols Noruega:</label>
+                <input type="number" id="gols-noruega" min="0" required placeholder="0">
+            </div>
+        </div>
+
+        <button type="submit">Enviar Palpite</button>
+    </form>
+
+    <table id="ranking">
+        <thead>
+            <tr>
+                <th>Participante</th>
+                <th>Palpite</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Os palpites do Firebase aparecerão aqui -->
+        </tbody>
+    </table>
+</div>
+
+<!-- Scripts do Firebase -->
+<script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, addDoc, onSnapshot, query, orderBy } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+  apiKey: "AIzaSyBKub4EtTigDZvfgLlsUpthSD1YMd11TIs",
+  authDomain: "bolao-f160a.firebaseapp.com",
+  databaseURL: "https://bolao-f160a-default-rtdb.firebaseio.com",
+  projectId: "bolao-f160a",
+  storageBucket: "bolao-f160a.firebasestorage.app",
+  messagingSenderId: "972792034212",
+  appId: "1:972792034212:web:e47b03f4ce41ebe5738731",
+  measurementId: "G-NZQ5Y6EY8Z"
+};
+
+    // Inicializar Firebase
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const palpitesRef = collection(db, "palpites");
+
+    const form = document.getElementById('bolao-form');
+    const tableBody = document.querySelector('#ranking tbody');
+
+    // Funcionalidade de copiar a chave PIX
+    document.getElementById('btn-copiar-pix').addEventListener('click', function() {
+        const chavePix = document.getElementById('chave-pix').innerText;
+        
+        // Método compatível para copiar texto
+        const tempInput = document.createElement('input');
+        tempInput.value = chavePix;
+        document.body.appendChild(tempInput);
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+
+        const btn = document.getElementById('btn-copiar-pix');
+        btn.innerText = "Chave Copiada! ✅";
+        btn.style.backgroundColor = "var(--copa-gold)";
+        
+        setTimeout(() => {
+            btn.innerText = "Copiar Chave PIX";
+            btn.style.backgroundColor = "#10b981";
+        }, 3000);
+    });
+
+    // Escutar dados em tempo real
+    const q = query(palpitesRef, orderBy("dataRegistro", "desc"));
+    onSnapshot(q, (snapshot) => {
+        tableBody.innerHTML = '';
+        snapshot.forEach((doc) => {
+            const p = doc.data();
+            const tr = document.createElement('tr');
+            tr.innerHTML = `
+                <td><strong>${p.nome}</strong></td>
+                <td><span class="palpite-destaque">BRA ${p.golsBrasil} x ${p.golsNoruega} NOR</span></td
+            `;
+            tableBody.appendChild(tr);
+        });
+    });
+
+    // Enviar dados
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        
+        const nome = document.getElementById('nome').value;
+        const golsBrasil = parseInt(document.getElementById('gols-brasil').value);
+        const golsNoruega = parseInt(document.getElementById('gols-noruega').value);
+        const btn = form.querySelector('button');
+
+        btn.innerText = "A enviar...";
+        btn.disabled = true;
+
+        try {
+            await addDoc(palpitesRef, {
+                nome: nome,
+                golsBrasil: golsBrasil,
+                golsNoruega: golsNoruega,
+                dataRegistro: new Date()
+            });
+            form.reset();
+            document.getElementById('nome').focus();
+        } catch (error) {
+            console.error(error);
+            alert("Erro ao enviar. Verifique as regras do Firestore.");
+        } finally {
+            btn.innerText = "Enviar Palpite";
+            btn.disabled = false;
+        }
+    });
+</script>
+
+</body>
+</html>
